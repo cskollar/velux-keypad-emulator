@@ -7,10 +7,10 @@ This is a proof-of-concept code to control old (1997-2018) Velux/WindowMaster sy
 
 ## Overview
 
-This project provides a minimal working **PoC (Proof of Concept)** implementation for emulating a Velux wall keypad using ESPHome.  
-The communication protocol was reverse-engineered with a Rigol DS1054Z oscilloscope by sniffing a **WLI 130** wall keypad connected to a **WLC 100** controller.
+This project provides a minimal working **PoC (Proof of Concept)** implementation for emulating a Velux keypad using ESPHome.  
+The communication protocol was reverse-engineered with a Rigol DS1054Z oscilloscope by sniffing a **WLI 130** keypad connected to a **WLC 100** controller.
 
-The code is expected to be compatible with other Velux Windowmaster keypads from the same era (e.g. **WLI 110**), but this has not been tested.
+The code is expected to be compatible with other Velux/Windowmaster keypads from the same era (e.g. **WLI 110**), but this has not been tested.
 
 ---
 
@@ -32,7 +32,7 @@ To interface safely, use an **NPN transistor level shifter**.
 - The controller's **DATA input** (usually the blue-marked terminal) already has an internal pull-up resistor.  
 - With the transistor interface, the signal becomes **inverted** – this is already handled in the ESPHome code.  
 
-The **WLC 100** controllers can handle multiple keypads connected in **simple parallel wiring**, so you can connect your ESP alongside an existing wall keypad without issues.  
+The **WLC 100** controllers can handle multiple keypads connected in **simple parallel wiring**, so you can connect your ESP alongside an existing keypad without issues.  
 
 ⚡ **Powering the ESP:**  
 It has not been tested whether the WLC 100 can reliably power an ESP device directly.  
