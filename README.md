@@ -24,6 +24,24 @@ The code is expected to be compatible with other Velux Windowmaster keypads from
 
 ---
 
+## Hardware / Electronics
+
+⚠️ **Do not connect your ESP device directly to the Velux controller**, as the controller uses **5V signal levels**.  
+To interface safely, use an **NPN transistor level shifter**.  
+
+- The controller's **DATA input** (usually the blue-marked terminal) already has an internal pull-up resistor.  
+- With the transistor interface, the signal becomes **inverted** – this is already handled in the ESPHome code.  
+
+The **WLC 100** controllers can handle multiple keypads connected in **simple parallel wiring**, so you can connect your ESP alongside an existing wall keypad without issues.  
+
+⚡ **Powering the ESP:**  
+It has not been tested whether the WLC 100 can reliably power an ESP device directly.  
+- I used a **Wemos D1 Mini** with an external USB power supply.  
+- Since multiple keypads can be daisy-chained to the WLC 100, it is *possible* that it could also supply an ESP – but this is unverified.  
+- If you try this and it works, feel free to open a **PR** to document it!  
+
+---
+
 ## Disclaimer
 
 This project is provided as-is, without any warranty.  
