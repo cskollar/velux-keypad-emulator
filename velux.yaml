@@ -1,0 +1,110 @@
+esphome:
+  name: velux-keypad
+  friendly_name: "Velux keypad emulator"
+  platform: ESP8266
+  board: d1_mini
+
+# For precise timing, it's recommended to disable WiFi power saving.
+wifi:
+  ssid: "SSID"
+  password: "secret"
+  power_save_mode: none
+
+api:
+  password: secret
+
+ota:
+  password: "secret"
+
+logger:
+  baud_rate: 0
+
+web_server:
+  port: 80
+
+output:
+  - platform: gpio
+    pin: D2
+    id: velux_data_pin
+
+cover:
+  - platform: template
+    name: "Velux Window"
+    id: velux_cover
+    open_action:
+      - logger.log: "Send open command..."
+      - output.turn_off: velux_data_pin
+      - delay: 1ms
+      - lambda: |-
+          auto pin = id(velux_data_pin);
+          std::vector<std::pair<bool, uint32_t>> pulses = {
+            {false, 1399}, {true, 400}, {false, 599}, {true, 1199}, {false, 1199},
+            {true, 400}, {false, 599}, {true, 1199}, {false, 1199}, {true, 400},
+            {false, 500}, {true, 1099}, {false, 600}, {true, 1199}, {false, 399},
+            {true, 1199}, {false, 600}, {true, 1199}, {false, 399}, {true, 1199},
+            {false, 1399}, {true, 400}, {false, 399}, {true, 30000},
+            {false, 1399}, {true, 400}, {false, 599}, {true, 1199}, {false, 1199},
+            {true, 400}, {false, 599}, {true, 1199}, {false, 1199}, {true, 400},
+            {false, 500}, {true, 1099}, {false, 600}, {true, 1199}, {false, 399},
+            {true, 1199}, {false, 600}, {true, 1199}, {false, 399}, {true, 1199},
+            {false, 1399}, {true, 400}, {false, 399}
+          };
+          for (auto pulse : pulses) {
+            if (pulse.first) pin->turn_off();  // active LOW
+            else pin->turn_on();               // inactive HIGH
+            delayMicroseconds(pulse.second);
+          }
+      - output.turn_off: velux_data_pin
+
+    close_action:
+      - logger.log: "Send close command..."
+      - output.turn_off: velux_data_pin
+      - delay: 1ms
+      - lambda: |-
+          auto pin = id(velux_data_pin);
+          std::vector<std::pair<bool, uint32_t>> pulses = {
+            {false, 1400}, {true, 400}, {false, 600}, {true, 1200}, {false, 1200},
+            {true, 400}, {false, 600}, {true, 1200}, {false, 1200}, {true, 400},
+            {false, 500}, {true, 1100}, {false, 600}, {true, 1200}, {false, 1200},
+            {true, 400}, {false, 600}, {true, 1200}, {false, 400}, {true, 1200},
+            {false, 600}, {true, 1200}, {false, 400}, {true, 30000},
+            {false, 1400}, {true, 400}, {false, 400}, {true, 1200}, {false, 1400},
+            {true, 400}, {false, 400}, {true, 1200}, {false, 1400}, {true, 400},
+            {false, 400}, {true, 1200}, {false, 600}, {true, 1000}, {false, 1400},
+            {true, 400}, {false, 400}, {true, 1200}, {false, 600}, {true, 1200},
+            {false, 400}, {true, 1200}, {false, 600}
+          };
+          for (auto pulse : pulses) {
+            if (pulse.first) pin->turn_off();  // active LOW
+            else pin->turn_on();               // inactive HIGH
+            delayMicroseconds(pulse.second);
+          }
+      - output.turn_off: velux_data_pin
+
+    stop_action:
+      - logger.log: "Send stop command..."
+      - output.turn_off: velux_data_pin
+      - delay: 1ms
+      - lambda: |-
+          auto pin = id(velux_data_pin);
+          std::vector<std::pair<bool, uint32_t>> pulses = {
+            {false, 1360}, {true, 400}, {false, 480}, {true, 1200}, {false, 1280},
+            {true, 400}, {false, 520}, {true, 1160}, {false, 520}, {true, 1160},
+            {false, 1300}, {true, 380}, {false, 1320}, {true, 360}, {false, 520},
+            {true, 1160}, {false, 520}, {true, 1160}, {false, 520}, {true, 1200},
+            {false, 480}, {true, 1200}, {false, 480}, {true, 30000},
+            {false, 1360}, {true, 400}, {false, 480}, {true, 1200}, {false, 1280},
+            {true, 400}, {false, 520}, {true, 1160}, {false, 520}, {true, 1160},
+            {false, 1300}, {true, 380}, {false, 1320}, {true, 360}, {false, 520},
+            {true, 1160}, {false, 520}, {true, 1160}, {false, 520}, {true, 1200},
+            {false, 480}, {true, 1200}, {false, 480}
+          };
+          for (auto pulse : pulses) {
+            if (pulse.first) pin->turn_off();  // active LOW
+            else pin->turn_on();               // inactive HIGH
+            delayMicroseconds(pulse.second);
+          }
+      - output.turn_off: velux_data_pin
+
+    assumed_state: true
+    optimistic: true
