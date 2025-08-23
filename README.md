@@ -8,7 +8,9 @@ This is a proof-of-concept code to control old (1997-2006) Velux/WindowMaster sy
 ## Overview
 
 This project provides a minimal working **PoC** implementation for emulating a Velux keypad using ESPHome.  
-The communication protocol was reverse-engineered with a Rigol DS1054Z oscilloscope by sniffing a **WLI 130** keypad connected to a **WLC 100** controller.
+The packets was reverse-engineered with a Rigol DS1054Z oscilloscope by sniffing a **WLI 130** keypad connected to a **WLC 100** controller.
+
+I wasn’t able to reverse-engineer the protocol; I don’t think it’s UART, RS232, I²C, or any other known standard. The WLI keypad contains an infrared receiver as well, since remote controls were available for it. Because of that, and based on the waveform, it seems that the device also uses some kind of proprietary pulse-modulated IR protocol on the DATA wire. In the ESPHome code, we therefore transmit the same sequences with the appropriate timing.
 
 The code is expected to be compatible with other Velux/Windowmaster keypads from the same era (e.g. **WLI 110**), but this has not been tested.
 
