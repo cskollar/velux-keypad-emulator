@@ -1,19 +1,24 @@
-esphome:
-  name: velux-keypad
-  friendly_name: "Velux keypad emulator"
-  platform: ESP8266
+esp8266:
   board: d1_mini
+  restore_from_flash: true
+
+esphome:
+  name: velux-keypad-emulator
+  name_add_mac_suffix: false
+  friendly_name: "Velux keypad emulator"
 
 # For precise timing, it's recommended to disable WiFi power saving.
 wifi:
   ssid: "SSID"
   password: "secret"
+  fast_connect: true
   power_save_mode: none
 
 api:
   password: secret
 
 ota:
+  platform: esphome
   password: "secret"
 
 logger:
@@ -26,6 +31,10 @@ output:
   - platform: gpio
     pin: D2
     id: velux_data_pin
+
+button:
+  - platform: restart
+    name: "Restart ESP device"
 
 cover:
   - platform: template
